@@ -192,6 +192,8 @@ namespace EnvironmentalMonitor.Website.Environmentals
                     }
                 }
 
+                rightAddress = true;
+
                 if (rightAddress)
                 {
                     stringBuilder.Append(this.MinimumThreshold(value, detectors));

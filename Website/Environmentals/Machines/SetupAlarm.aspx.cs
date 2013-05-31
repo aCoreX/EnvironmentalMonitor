@@ -156,6 +156,7 @@ namespace EnvironmentalMonitor.Website.Environmentals.Machines
                 string guid = this.DropDownListMachines.SelectedValue;
                 if (!string.IsNullOrEmpty(guid))
                 {
+                    string exceptionMessage = string.Empty;
                     try
                     {
                         MachineBusiness business = new MachineBusiness();
@@ -170,25 +171,32 @@ namespace EnvironmentalMonitor.Website.Environmentals.Machines
                             module.MobileB = this.TextBoxMobileB.Text;
                             module.MobileC = this.TextBoxMobileC.Text;
 
+                            exceptionMessage = "修改检测仪数据库数据错误！";
                             done = business.Update(module);
 
                             if (done)
                             {
-                                stringBuilder.Append("修改检测仪成功！");
+                                stringBuilder.Append("修改检测仪数据库数据成功！");
 
                                 string message = string.Empty;
 
                                 MachineSetup setup = new MachineSetup();
+
+                                exceptionMessage = "修改检测仪阀值错误！";
                                 message = setup.Threshold(module);
                                 stringBuilder.Append(message);
+
+                                exceptionMessage = "修改检测仪手机报警错误！";
                                 message = setup.MobileAlarm(module);
                                 stringBuilder.Append(message);
+
+                                exceptionMessage = "修改检测仪接收短信手机号码错误！";
                                 message = setup.Mobile(module);
                                 stringBuilder.Append(message);
                             }
                             else
                             {
-                                stringBuilder.Append("修改检测仪失败！");
+                                stringBuilder.Append("修改检测仪数据库数据失败！");
                             }
                         }
                         else
@@ -198,7 +206,7 @@ namespace EnvironmentalMonitor.Website.Environmentals.Machines
                     }
                     catch (Exception exception)
                     {
-                        stringBuilder.Append("修改检测仪错误！");
+                        stringBuilder.Append(exceptionMessage);
                         Variable.Logger.Log(exception);
                     }
                 }

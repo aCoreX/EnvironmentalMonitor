@@ -300,6 +300,28 @@ namespace EnvironmentalMonitor.Website.Environmentals.Detectors
                     if (done)
                     {
                         stringBuilder.Append("修改探头成功！");
+
+                        string exceptionMessage = string.Empty;
+                        try
+                        {
+                            MachineBusiness machineBusiness = new MachineBusiness();
+                            Machine machineModule = machineBusiness.QueryByGuid(machineId);
+
+                            exceptionMessage = "修改检测仪数据库数据错误！";
+
+                            string message = string.Empty;
+
+                            MachineSetup setup = new MachineSetup();
+
+                            exceptionMessage = "修改检测仪阀值错误！";
+                            message = setup.Threshold(machineModule);
+                            stringBuilder.Append(message);
+                        }
+                        catch (Exception exception)
+                        {
+                            stringBuilder.Append(exceptionMessage);
+                            Variable.Logger.Log(exception);
+                        }
                     }
                     else
                     {

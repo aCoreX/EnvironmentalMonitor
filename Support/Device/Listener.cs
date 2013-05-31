@@ -61,6 +61,7 @@ namespace EnvironmentalMonitor.Support.Device
                 Listener.Initialize = true;
                 ThreadStart threadStart = new ThreadStart(Instance);
                 Listener.Thread = new Thread(threadStart);
+
                 Listener.Thread.Start();
             }
         }
@@ -84,17 +85,13 @@ namespace EnvironmentalMonitor.Support.Device
                         int count = Hardware.Socket.ReceiveFrom(buffer, ref remoteEP);
                         if (count >= length)
                         {
-                            byte[] values = new byte[count];
-                            Array.Copy(buffer, values, count);
-                            Hardware.InstructionHandler.Process(Hardware.Socket.LocalEndPoint, remoteEP, values);
-
-                            if (Hardware.InstructionHandlers != null)
+                            ThreadStart threadStart = new ThreadStart(delegate()
                             {
-                                for (int i = 0; i < Hardware.InstructionHandlers.Count; i++)
-                                {
-                                    Hardware.InstructionHandlers[i].Process(Hardware.Socket.LocalEndPoint, remoteEP, values);
-                                }
-                            }
+                                Process(count, buffer, remoteEP);
+                            });
+                            Listener.Thread = new Thread(threadStart);
+
+                            Listener.Thread.Start();
                         }
                         else
                         {
@@ -120,6 +117,21 @@ namespace EnvironmentalMonitor.Support.Device
                     finally
                     {
                     }
+                }
+            }
+        }
+
+        public static void Process(int count, byte[] buffer, EndPoint remoteEP)
+        {
+            byte[] values = new byte[count];
+            Array.Copy(buffer, values, count);
+            Hardware.InstructionHandler.Process(Hardware.Socket.LocalEndPoint, remoteEP, values);
+
+            if (Hardware.InstructionHandlers != null)
+            {
+                for (int i = 0; i < Hardware.InstructionHandlers.Count; i++)
+                {
+                    Hardware.InstructionHandlers[i].Process(Hardware.Socket.LocalEndPoint, remoteEP, values);
                 }
             }
         }

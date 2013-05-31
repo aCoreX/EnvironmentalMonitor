@@ -26,7 +26,7 @@ namespace EnvironmentalMonitor.Support.Instruction.Out.Request
         {
             get
             {
-                return 6;
+                return 0;
             }
         }
 
@@ -137,16 +137,20 @@ namespace EnvironmentalMonitor.Support.Instruction.Out.Request
             }
 
             address = 0;
-            this.Data = new byte[count];
-            byte[][] datas = { firstDatas, secondDatas, thirdDatas };
-            for (int i = 0; i < datas.Length; i++)
+            if (count > 0)
             {
-                if (datas[i] != null)
+                this.Data = new byte[count];
+
+                byte[][] datas = { firstDatas, secondDatas, thirdDatas };
+                for (int i = 0; i < datas.Length; i++)
                 {
-                    for (int j = 0; j < datas[i].Length; j++)
+                    if (datas[i] != null)
                     {
-                        this.Data[address] = datas[i][j];
-                        address++;
+                        for (int j = 0; j < datas[i].Length; j++)
+                        {
+                            this.Data[address] = datas[i][j];
+                            address++;
+                        }
                     }
                 }
             }

@@ -127,6 +127,32 @@ namespace EnvironmentalMonitor.Website.Environmentals.Detectors
                     }
                     stringBuilder.Append(string.Format("删除{0}个探头成功！", success));
                     stringBuilder.Append(string.Format("删除{0}个探头失败！", fail));
+
+                    string machineId = this.DropDownListMachines.SelectedValue;
+                    if (!string.IsNullOrEmpty(machineId))
+                    {
+                        string exceptionMessage = string.Empty;
+                        try
+                        {
+                            MachineBusiness machineBusiness = new MachineBusiness();
+                            Machine machineModule = machineBusiness.QueryByGuid(machineId);
+
+                            exceptionMessage = "修改检测仪数据库数据错误！";
+
+                            string message = string.Empty;
+
+                            MachineSetup setup = new MachineSetup();
+
+                            exceptionMessage = "修改检测仪阀值错误！";
+                            message = setup.Threshold(machineModule);
+                            stringBuilder.Append(message);
+                        }
+                        catch (Exception exception)
+                        {
+                            stringBuilder.Append(exceptionMessage);
+                            Variable.Logger.Log(exception);
+                        }
+                    }
                 }
             }
 

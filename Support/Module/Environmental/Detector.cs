@@ -315,11 +315,11 @@ namespace EnvironmentalMonitor.Support.Module.Environmental
                         case DetectorTypes.Switch:
                             if (this.Value == this.MinimumA)
                             {
-                                result = string.Format("<font style=\"color:#ff0000\">{0}</font>", this.DetectorType.DescriptionA);
+                                result = this.DetectorType.DescriptionA;
                             }
                             else
                             {
-                                result = this.DetectorType.DescriptionB;
+                                result = string.Format("<font style=\"color:#ff0000\">{0}</font>", this.DetectorType.DescriptionB);
                             }
                             break;
                         case DetectorTypes.DoubleArea:
