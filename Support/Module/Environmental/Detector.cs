@@ -325,6 +325,7 @@ namespace EnvironmentalMonitor.Support.Module.Environmental
                         case DetectorTypes.DoubleArea:
                             StringBuilder stringBuilder = new StringBuilder();
                             byte[] values = BitConverter.GetBytes(this.Value);
+                            Array.Reverse(values);
                             if ((values[0] > this.MinimumA) && (values[0] < this.MaximumA))
                             {
                                 stringBuilder.Append(string.Format("{0}：{1}{2}", this.DetectorType.DescriptionA, values[0], this.DetectorType.UnitA));
