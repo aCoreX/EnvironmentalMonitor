@@ -14,6 +14,8 @@ namespace EnvironmentalMonitor.Support.Instruction.Out.Request
     /// </summary>
     public class MobileInstruction : EnvironmentalMonitor.Support.Instruction.AbstractInstruction
     {
+        public const int MOBILE_BCD_LENGTH = 6;
+
         public override InstructionTypes InstructionType
         {
             get
@@ -84,8 +86,8 @@ namespace EnvironmentalMonitor.Support.Instruction.Out.Request
                 if (Regex.IsMatch(first, pattern))
                 {
                     address = 0;
-                    firstDatas = new byte[this.Minimum];
-                    count += this.Minimum;
+                    firstDatas = new byte[MobileInstruction.MOBILE_BCD_LENGTH];
+                    count += MobileInstruction.MOBILE_BCD_LENGTH;
                     first = string.Format("0{0}", first);
                     for (int i = 0; i < (first.Length / bcdLength); i++)
                     {
@@ -103,8 +105,8 @@ namespace EnvironmentalMonitor.Support.Instruction.Out.Request
                 if (Regex.IsMatch(second, pattern))
                 {
                     address = 0;
-                    secondDatas = new byte[this.Minimum];
-                    count += this.Minimum;
+                    secondDatas = new byte[MobileInstruction.MOBILE_BCD_LENGTH];
+                    count += MobileInstruction.MOBILE_BCD_LENGTH;
                     second = string.Format("0{0}", second);
                     for (int i = 0; i < (second.Length / bcdLength); i++)
                     {
@@ -122,8 +124,8 @@ namespace EnvironmentalMonitor.Support.Instruction.Out.Request
                 if (Regex.IsMatch(third, pattern))
                 {
                     address = 0;
-                    thirdDatas = new byte[this.Minimum];
-                    count += this.Minimum;
+                    thirdDatas = new byte[MobileInstruction.MOBILE_BCD_LENGTH];
+                    count += MobileInstruction.MOBILE_BCD_LENGTH;
                     third = string.Format("0{0}", third);
                     for (int i = 0; i < (third.Length / bcdLength); i++)
                     {
@@ -175,7 +177,7 @@ namespace EnvironmentalMonitor.Support.Instruction.Out.Request
                         if (this.Data.Length >= this.Minimum * (i + 1))
                         {
                             stringBuilder = new StringBuilder();
-                            for (int j = 0; j < this.Minimum; j++)
+                            for (int j = 0; j < MobileInstruction.MOBILE_BCD_LENGTH; j++)
                             {
                                 byte high = (byte)(this.Data[address] >> byteBitWide);
                                 byte low = (byte)(this.Data[address] & 0x0F);
